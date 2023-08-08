@@ -4,7 +4,7 @@ import bmesh
 bl_info = {
     "name": "Move Smaller Mesh Objects",
     "author": "ChatGPT ft. Andy Tanguay",
-    "version": (1, 0),
+    "version": (1, 1),
     "blender": (2, 80, 0),
     "location": "View3D > View Menu > Collect Small Objects",
     "description": "Moves mesh objects smaller than the selected object to the 'Littles' collection",
@@ -65,21 +65,17 @@ class OBJECT_OT_move_smaller_objects(bpy.types.Operator):
         move_smaller_objects(self, context)
         return {'FINISHED'}
 
-
 def menu_func(self, context):
     self.layout.separator()
     self.layout.operator(OBJECT_OT_move_smaller_objects.bl_idname)
 
-
 def register():
     bpy.utils.register_class(OBJECT_OT_move_smaller_objects)
-    bpy.types.VIEW3D_MT_view.append(menu_func)
-
+    bpy.types.VIEW3D_MT_select_object.append(menu_func)
 
 def unregister():
     bpy.utils.unregister_class(OBJECT_OT_move_smaller_objects)
-    bpy.types.VIEW3D_MT_view.remove(menu_func)
-
+    bpy.types.VIEW3D_MT_select_object.remove(menu_func)
 
 if __name__ == "__main__":
     register()
