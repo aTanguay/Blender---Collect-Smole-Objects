@@ -233,9 +233,34 @@ A: Note it in TASKS.md but explain foundation must be built first.
 - Full validation for all methods
 - Backend API complete
 
+### Phase 2a - UI Panel Development ✅
+- Full sidebar panel in N-panel ("Collect" tab)
+- Method selection dropdown with 5 options
+- Dynamic controls that change per method
+- Scene analysis button with statistics display
+- Property group for UI state management
+- Clean Blender-style layout with sections
+
+### Phase 2b - Preview System ✅
+- Preview operator that selects objects before collection
+- Clear preview operator to reset selection
+- Preview statistics display (object count, polygon count, percentage)
+- Preview/Clear Preview buttons in UI panel
+- Automatic preview clearing after collect operation
+
+## Future Feature Ideas
+
+### Occlusion Detection (Phase 3+)
+User-requested feature for detecting hidden/internal objects in CAD assemblies:
+- **Problem**: Product models (like Walkman) include internal mechanics never seen in renders
+- **Goal**: Detect and collect fully occluded objects (objects hidden inside other objects)
+- **Approach**: Multi-directional raycast analysis to determine visibility percentage
+- **Integration**: New "Occlusion" threshold method with sensitivity slider
+- **See**: PLANNING.md "Future Considerations" and TASKS.md "Phase 3" for detailed breakdown
+
 ---
 
 **Last Updated**: 2025-11-20
-**Current Phase**: Phase 2a - UI Panel Development
-**Phase 1 Status**: ✅ COMPLETE (All backend functionality ready)
-**Next Milestone**: Build sidebar panel with method selection and controls
+**Current Phase**: Phase 2c - Multiple Collection Tiers
+**Phase 2b Status**: ✅ COMPLETE (Preview system functional)
+**Next Milestone**: Implement tiered collection system (Tiny/Small/Medium)

@@ -285,6 +285,43 @@
   - [ ] Time estimation
   - [ ] Batch processing optimization
 
+### Occlusion Detection (Shell Extraction)
+**Goal**: Detect and collect objects that are completely hidden inside assemblies (internal mechanics, hidden screws, etc.)
+
+**Use Case**: Product renders where only the outer shell matters (Walkman with all internal mechanics)
+
+- [ ] Research and prototype occlusion detection
+  - [ ] Research Blender raycast API
+  - [ ] Test performance with multi-directional raycasts
+  - [ ] Prototype bounding box intersection tests
+  - [ ] Evaluate render-based approaches
+
+- [ ] Implement core occlusion analysis
+  - [ ] Create multi-directional raycast system
+  - [ ] Calculate occlusion percentage per object
+  - [ ] Handle partially visible objects
+  - [ ] Optimize for large object counts
+  - [ ] Cache results for performance
+
+- [ ] Add occlusion threshold method
+  - [ ] Integrate with existing threshold system
+  - [ ] "Collect objects X% occluded or more"
+  - [ ] Sensitivity slider (0-100%)
+  - [ ] Combine with volume filtering option
+
+- [ ] UI integration
+  - [ ] Add "Occlusion" threshold method to dropdown
+  - [ ] Occlusion sensitivity slider
+  - [ ] "Small OR Occluded" combined mode
+  - [ ] Preview occluded objects
+  - [ ] Statistics (% occluded, ray hits, etc.)
+
+- [ ] Advanced occlusion features
+  - [ ] Sample ray count control (performance vs accuracy)
+  - [ ] Ignore transparent materials option
+  - [ ] Directional occlusion (from specific viewpoint)
+  - [ ] Export occlusion map for review
+
 ---
 
 ## Testing & Quality Assurance
