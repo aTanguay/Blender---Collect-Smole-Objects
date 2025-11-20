@@ -17,7 +17,24 @@ The challenge? A threshold that works for a Sony Walkman won't work for a car. W
 - Non-destructive - objects are still there, just organized and hidden
 
 ### Installation
-Install as usual through Blender's addon preferences. Once installed, you'll find it in the **Select** menu in the main 3D viewport interface, after a separator near the bottom.
+
+The addon is available in two formats depending on your Blender version:
+
+**For Blender 4.2+ (Modern Extension)**
+1. Download `collect_smole_objects_v110_extension.zip` from the [releases](release/) folder
+2. Open Blender > Edit > Preferences > Get Extensions
+3. Click the dropdown menu (⌄) > Install from Disk
+4. Select the downloaded zip file
+5. Enable the extension if not already enabled
+
+**For Blender 2.80 - 4.1 (Legacy Addon)**
+1. Download `Blender_CollectSmoleObjects_v110_legacy.zip` from the [releases](release/) folder
+2. Open Blender > Edit > Preferences > Add-ons
+3. Click "Install..." button
+4. Select the downloaded zip file
+5. Enable the addon by checking the checkbox
+
+Once installed, you'll find the tool in the **Select** menu (3D Viewport > Select > Collect Smaller Objects).
 
 ### Basic Usage
 1. Select a small mesh object in your scene (start very small)

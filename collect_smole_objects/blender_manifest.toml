@@ -1,0 +1,36 @@
+# Blender Extension Manifest
+# Collect Smole Objects - CAD Cleanup Addon
+
+schema_version = "1.0.0"
+
+id = "collect_smole_objects"
+version = "1.1.0"
+name = "Collect Smole Objects"
+tagline = "Collect and hide small objects by volume - perfect for cleaning up CAD imports"
+maintainer = "Andy Tanguay <https://github.com/aTanguay>"
+type = "add-on"
+
+website = "https://github.com/aTanguay/Blender---Collect-Smole-Objects"
+
+tags = ["Object", "Import-Export", "Mesh"]
+
+blender_version_min = "4.2.0"
+
+license = [
+  "SPDX:GPL-3.0-or-later",
+]
+
+copyright = [
+  "2024 Andy Tanguay (ChatGPT assisted)",
+]
+
+# Future permissions when we add advanced features
+# [permissions]
+# files = "Export filtered collections to disk"
+
+[build]
+paths_exclude_pattern = [
+  "__pycache__/",
+  "*.pyc",
+  ".DS_Store",
+]
