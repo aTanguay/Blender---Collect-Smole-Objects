@@ -48,46 +48,56 @@ Once installed, you'll find the tool in the **Select** menu (3D Viewport > Selec
 
 We're transforming this from a simple tool into a robust, scale-agnostic CAD cleanup solution:
 
-### Smart Threshold Methods
-No more guessing! Choose the method that works for your project:
-- **Reference Object**: Current method, but enhanced with preview and statistics
-- **Percentage-Based**: "Collect objects smaller than 5% of the largest object"
-- **Absolute Volume**: Direct volume input (great when you know exactly what you want)
-- **Percentile-Based**: "Collect the smallest 20% of objects" (perfect for unknown CAD data)
+### ✅ Smart Threshold Methods (IMPLEMENTED - Phase 1c)
+No more guessing! Backend supports 5 flexible threshold methods:
+- **Reference Object**: Enhanced with metadata (ready for UI)
+- **Percentage of Largest**: "Collect objects smaller than 5% of the largest object"
+- **Percentage of Average**: "Collect objects smaller than 25% of average size"
+- **Absolute Volume**: Direct volume input in cubic units
+- **Percentile-Based**: "Collect the smallest 80% of objects" (perfect for unknown CAD data)
 
-### Scene Analysis
-Before you commit, understand your scene:
-- Statistical breakdown: min/max/median/mean volumes
-- Smart threshold suggestions based on size distribution
-- Preview how many objects will be affected
-- See total polygon count impact before executing
+All methods convert to absolute volume threshold with full validation and error handling.
 
-### Full UI Panel
+### ✅ Scene Analysis (IMPLEMENTED - Phase 1b)
+Complete statistical analysis engine:
+- Statistical breakdown: min/max/median/mean/std dev volumes
+- Percentile calculations (10th, 20th, 25th, 50th, 75th, 80th, 90th)
+- Natural gap detection (finds 3x+ size jumps in distribution)
+- Smart threshold suggestions with reasoning (4 recommendation types)
+- Impact preview: counts, polygons, percentages
+- Structured data ready for UI display
+
+### ✅ Better Error Handling (IMPLEMENTED - Phase 1a)
+Comprehensive validation and error recovery:
+- Pre-flight validation (scene has meshes, valid selection, geometry checks)
+- Clear error messages with specific suggestions
+- Graceful failure handling (skip invalid objects vs failing entirely)
+- Proper cleanup in error paths
+- Console logging for debugging
+- Full validation for all threshold methods
+
+### 🚧 Full UI Panel (IN PROGRESS - Phase 2a)
 Dedicated sidebar panel (N-panel) with:
 - Method selection dropdown
-- Live preview of affected objects
+- Dynamic controls per threshold method
 - Real-time statistics display
-- Threshold adjustment sliders
-- "Analyze Scene" → "Preview" → "Execute" workflow
+- Action buttons: "Analyze Scene" → "Preview" → "Execute"
+- Clean, intuitive Blender-style layout
 
-### Preview Before You Commit
-- See which objects will be collected before moving them
-- Highlight/select objects for inspection
-- Adjust threshold and see updates in real-time
+### 📋 Preview System (PLANNED - Phase 2b)
+See before you commit:
+- Highlight objects that will be collected
+- Select/inspect objects for review
+- Adjust threshold with live updates
+- Show polygon count impact
 - No more trial and error!
 
-### Multi-Tier Collections (Advanced)
-Create multiple collection tiers:
-- "Tiny", "Small", "Medium" collections
-- Organize objects by size automatically
-- Easy to show/hide different levels
-- Better scene organization for complex projects
-
-### Better Error Handling
-- Clear messages when something goes wrong
-- Helpful suggestions for fixing issues
-- Validation before execution
-- Graceful handling of edge cases (empty meshes, modifiers, etc.)
+### 📋 Multi-Tier Collections (PLANNED - Phase 2c)
+Advanced organization:
+- Create multiple tiers: "Tiny", "Small", "Medium"
+- Automatic size-based organization
+- Easy show/hide per tier
+- Better scene management for complex projects
 
 ### Advanced Features (Planned)
 - Name pattern exclusion (protect objects by name)
@@ -114,7 +124,16 @@ Import a building with tons of small fixtures. Use absolute volume to collect ob
 
 ## Development Status
 
-Currently in **Phase 1a**: Foundation & Error Handling
+**Phase 1 COMPLETE! ✓**
+
+All backend functionality implemented:
+- ✅ **Phase 1a**: Foundation & Error Handling - Modular architecture with comprehensive validation
+- ✅ **Phase 1b**: Scene Analysis System - Statistical analysis and smart threshold suggestions
+- ✅ **Phase 1c**: Multiple Threshold Methods - 5 flexible ways to specify thresholds
+
+**Currently in Phase 2a**: UI Panel Development
+
+The complete backend API is ready! Next up is building the user interface to make all these features accessible.
 
 See TASKS.md for detailed progress and upcoming milestones.
 

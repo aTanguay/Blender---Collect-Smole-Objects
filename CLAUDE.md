@@ -16,10 +16,12 @@
 Blender addon that collects and hides small objects in CAD imports based on volume. Used for cleaning up automotive UDM models, product renders, and complex CAD data with unwanted tiny parts (screws, springs, etc.).
 
 ### Current State
-- **Version**: 1.1 (basic functionality)
-- **Status**: Planning major v2.0 upgrade
-- **Current Feature**: Single reference-object-based collection with minimal UI
-- **Target**: Robust multi-method threshold system with full UI panel and preview
+- **Version**: 1.1 (released - basic functionality)
+- **Status**: v2.0 development - Phase 1 COMPLETE, Phase 2a in progress
+- **Current Features**:
+  - v1.1: Single reference-object method (legacy addon + modern extension)
+  - v2.0 Backend: Complete modular architecture with 5 threshold methods, scene analysis, validation
+- **Target**: Full UI panel integration (Phase 2a), preview system (Phase 2b), multi-tier collections (Phase 2c)
 
 ### Key Problem Being Solved
 Users struggle with scale-dependent workflows - a threshold that works for a Sony Walkman won't work for a car or building. The addon needs to be smarter and more flexible.
@@ -33,26 +35,27 @@ Users struggle with scale-dependent workflows - a threshold that works for a Son
 4. Follow the phased implementation order
 
 ### Implementation Phases (In Order)
-- **Phase 1a**: Error handling and validation (foundation)
-- **Phase 1b**: Scene analysis and statistics
-- **Phase 1c**: Multiple threshold methods
-- **Phase 2a**: UI panel development
-- **Phase 2b**: Preview system
-- **Phase 2c**: Multiple collection tiers
-- **Phase 3**: Advanced features
+- **Phase 1a**: ✅ COMPLETE - Error handling and validation (foundation)
+- **Phase 1b**: ✅ COMPLETE - Scene analysis and statistics
+- **Phase 1c**: ✅ COMPLETE - Multiple threshold methods
+- **Phase 2a**: 🚧 IN PROGRESS - UI panel development
+- **Phase 2b**: 📋 PLANNED - Preview system
+- **Phase 2c**: 📋 PLANNED - Multiple collection tiers
+- **Phase 3**: 📋 PLANNED - Advanced features
 
 ### Code Organization
-Future structure (when refactoring):
+Current structure (refactored):
 ```
-/dev/
-  __init__.py          # Main registration
-  core.py              # Volume calculations, object processing
-  analysis.py          # Scene analysis, statistics
-  ui.py                # Panels, operators
-  utils.py             # Validation, helpers
+/collect_smole_objects/
+  __init__.py          # Main registration with reload support
+  core.py              # Volume calculations, threshold methods (395 lines)
+  analysis.py          # Scene analysis, statistics, suggestions (354 lines)
+  ui.py                # Operators, menus (current) → panels (Phase 2a)
+  utils.py             # Validation, helpers (160 lines)
+  blender_manifest.toml # Modern extension metadata
 ```
 
-Current: Single file at `dev/Blender_CollectSmoleObjects_v01.py`
+Legacy: Single file at `dev/Blender_CollectSmoleObjects_v01.py` (for Blender 2.80-4.1)
 
 ## Critical Technical Details
 
@@ -201,14 +204,38 @@ A: Note it in TASKS.md but explain foundation must be built first.
 
 ## Critical Reminders
 
-- **Error handling first** - Phase 1a is highest priority
+- **Phase 1 Complete!** - Backend API fully functional
 - **User feedback always** - No silent operations
 - **Test edge cases** - Empty meshes, modifiers, scale extremes
 - **Update docs** - TASKS.md and code comments
 - **Commit often** - Small, focused commits
+- **UI integration next** - Connect backend to Blender UI elements
+
+## Phase 1 Accomplishments
+
+### Phase 1a - Foundation & Error Handling ✅
+- Modular architecture (utils, core, analysis, ui)
+- Comprehensive validation system
+- Graceful error recovery with skip logic
+- Console logging for debugging
+
+### Phase 1b - Scene Analysis System ✅
+- Full statistical analysis (min/max/mean/median/std dev)
+- Percentile calculations with linear interpolation
+- Natural gap detection (3x+ size jumps)
+- 4 smart threshold recommendations with reasoning
+- Impact preview calculations
+
+### Phase 1c - Multiple Threshold Methods ✅
+- 5 threshold methods implemented
+- Unified processor (calculate_threshold_volume)
+- Method-specific metadata
+- Full validation for all methods
+- Backend API complete
 
 ---
 
 **Last Updated**: 2025-11-20
-**Current Phase**: Phase 1a - Foundation & Error Handling
-**Next Milestone**: Complete error handling and validation system
+**Current Phase**: Phase 2a - UI Panel Development
+**Phase 1 Status**: ✅ COMPLETE (All backend functionality ready)
+**Next Milestone**: Build sidebar panel with method selection and controls
