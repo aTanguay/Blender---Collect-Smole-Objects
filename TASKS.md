@@ -4,8 +4,8 @@
 - **Current Version**: v1.1
 - **Next Target Version**: v2.0
 - **Last Updated**: 2025-11-20
-- **Active Phase**: Phase 2b - Preview System
-- **Last Completed Phase**: Phase 2a - UI Panel Development ✓
+- **Active Phase**: Phase 2c - Multiple Collection Tiers
+- **Last Completed Phase**: Phase 2b - Preview System ✓
 
 ## Task Status Legend
 - [ ] Not started
@@ -177,27 +177,35 @@
 ## Phase 2b: Preview System
 
 ### Visual Preview
-- [ ] Implement object highlighting system
-  - [ ] Temporarily change object display color
-  - [ ] Use viewport overlays for preview
-  - [ ] Add wireframe/solid preview options
-  - [ ] Clear preview state cleanly
+- [✓] Implement object highlighting system
+  - [✓] Use Blender selection system for preview
+  - [✓] Clear preview state cleanly
+  - [ ] Temporarily change object display color (deferred - selection is sufficient)
+  - [ ] Use viewport overlays for preview (deferred)
+  - [ ] Add wireframe/solid preview options (deferred)
 
 ### Selection Preview
-- [ ] Create preview selection functionality
-  - [ ] Select all objects that would be collected
-  - [ ] Use Blender selection system
-  - [ ] Allow inspection before execution
-  - [ ] Add "hide preview" option
+- [✓] Create preview selection functionality
+  - [✓] Select all objects that would be collected
+  - [✓] Use Blender selection system
+  - [✓] Allow inspection before execution
+  - [✓] Add clear preview button
 
-### Preview Object List
+### Preview Statistics Display
+- [✓] Display preview statistics in panel
+  - [✓] Show object count
+  - [✓] Show polygon count
+  - [✓] Show percentage of scene
+  - [✓] Preview/Clear Preview buttons
+
+### Preview Object List (Deferred to Future Enhancement)
 - [ ] Display affected objects list
   - [ ] Scrollable list in panel
   - [ ] Show object names and volumes
   - [ ] Click to focus/select object
   - [ ] Sort options (name, size, collection)
 
-### Live Updates
+### Live Updates (Deferred to Future Enhancement)
 - [ ] Implement real-time preview updates
   - [ ] Update preview as threshold changes
   - [ ] Throttle updates for performance
@@ -408,6 +416,14 @@
   - Collect Objects button using selected method
   - Property group for UI state management
   - Clean Blender-style layout with sections
+- **Phase 2b COMPLETED**: Preview System
+  - Preview operator that selects objects that would be collected
+  - Clear preview operator to reset selection
+  - Preview statistics display (object count, polygon count, percentage)
+  - Preview/Clear Preview buttons in UI panel
+  - Preview state tracking in property group
+  - Automatic preview clearing after collect operation
+  - Uses Blender's native selection system for visual feedback
 
 ---
 
@@ -418,20 +434,16 @@
 - ✓ Phase 1b: Scene Analysis System (COMPLETE)
 - ✓ Phase 1c: Multiple Threshold Methods (COMPLETE)
 - ✓ Phase 2a: UI Panel Development (COMPLETE)
+- ✓ Phase 2b: Preview System (COMPLETE)
 - ✓ Project documentation (PLANNING.md, TASKS.md, CLAUDE.md)
 - ✓ Dual-format packaging system
 - ✓ Code refactoring into modules
-- ✓ Complete backend API + functional UI
+- ✓ Complete backend API + functional UI with preview
 
 **Active Tasks:**
-- Ready to begin Phase 2b: Preview System
+- Ready to begin Phase 2c: Multiple Collection Tiers
 
 **Next Up:**
-- Phase 2b: Preview system
-  - Visual highlighting of objects that will be collected
-  - Selection preview functionality
-  - Preview button in UI
-  - Clear preview button
 - Phase 2c: Multiple collection tiers
   - Create tiered collections (Tiny, Small, Medium)
   - Automatic tier organization

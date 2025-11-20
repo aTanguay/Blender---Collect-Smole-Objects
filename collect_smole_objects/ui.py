@@ -74,6 +74,17 @@ class CollectSmoleObjectsProperties(PropertyGroup):
     mean_volume: FloatProperty(default=0.0)
     median_volume: FloatProperty(default=0.0)
 
+    # Preview state
+    preview_active: BoolProperty(
+        name="Preview Active",
+        description="Preview is currently active",
+        default=False
+    )
+
+    preview_object_count: IntProperty(default=0)
+    preview_polygon_count: IntProperty(default=0)
+    preview_percentage: FloatProperty(default=0.0)
+
 
 class OBJECT_OT_analyze_scene(bpy.types.Operator):
     """Analyze scene to gather statistics"""
@@ -117,6 +128,132 @@ class OBJECT_OT_analyze_scene(bpy.types.Operator):
             for obj_name, reason in results['invalid_reasons']:
                 print(f"  - {obj_name}: {reason}")
             print()
+
+        return {'FINISHED'}
+
+
+class OBJECT_OT_preview_collection(bpy.types.Operator):
+    """Preview which objects will be collected without moving them"""
+    bl_idname = "object.collect_smole_preview"
+    bl_label = "Preview Collection"
+    bl_description = "Select all objects that would be collected with current threshold"
+
+    def execute(self, context):
+        props = context.scene.collect_smole_props
+
+        # Calculate threshold based on selected method
+        threshold_result = None
+        reference_obj = None
+
+        if props.threshold_method == 'REFERENCE':
+            # Validate selection
+            success, error = utils.validate_selection(context)
+            if not success:
+                self.report({'WARNING'}, error)
+                return {'CANCELLED'}
+
+            reference_obj = context.selected_objects[0]
+
+            # Validate it's a mesh
+            success, error = utils.validate_object_is_mesh(reference_obj)
+            if not success:
+                self.report({'ERROR'}, error)
+                return {'CANCELLED'}
+
+            threshold_result = core.calculate_threshold_volume('reference', None, context, reference_obj)
+
+        elif props.threshold_method == 'PERCENTAGE_LARGEST':
+            threshold_result = core.calculate_threshold_volume('percentage_largest', props.percentage_value, context)
+
+        elif props.threshold_method == 'PERCENTAGE_AVERAGE':
+            threshold_result = core.calculate_threshold_volume('percentage_average', props.percentage_value, context)
+
+        elif props.threshold_method == 'PERCENTILE':
+            threshold_result = core.calculate_threshold_volume('percentile', props.percentile_value, context)
+
+        elif props.threshold_method == 'ABSOLUTE':
+            threshold_result = core.calculate_threshold_volume('absolute', props.absolute_volume, context)
+
+        # Check if threshold calculation succeeded
+        if not threshold_result or not threshold_result['success']:
+            error_msg = threshold_result['error_message'] if threshold_result else "Unknown error"
+            self.report({'ERROR'}, f"Failed to calculate threshold: {error_msg}")
+            return {'CANCELLED'}
+
+        threshold_volume = threshold_result['threshold_volume']
+
+        # Clear current selection
+        bpy.ops.object.select_all(action='DESELECT')
+
+        # Select all objects that would be collected
+        selected_count = 0
+        polygon_count = 0
+
+        for obj in bpy.data.objects:
+            # Skip non-mesh objects
+            if obj.type != 'MESH':
+                continue
+
+            # Skip reference object
+            if obj == reference_obj:
+                continue
+
+            # Calculate volume
+            success, volume, error = core.calculate_object_volume(obj, context)
+
+            if not success:
+                continue
+
+            # Check if smaller than threshold
+            if volume < threshold_volume:
+                obj.select_set(True)
+                selected_count += 1
+
+                # Count polygons
+                depsgraph = context.evaluated_depsgraph_get()
+                try:
+                    mesh = obj.evaluated_get(depsgraph).to_mesh(preserve_all_data_layers=False)
+                    if mesh:
+                        polygon_count += len(mesh.polygons)
+                    obj.evaluated_get(depsgraph).to_mesh_clear()
+                except:
+                    pass
+
+        # Calculate percentage
+        mesh_objects = [obj for obj in context.scene.objects if obj.type == 'MESH']
+        percentage = (selected_count / len(mesh_objects) * 100) if mesh_objects else 0
+
+        # Store preview state
+        props.preview_active = True
+        props.preview_object_count = selected_count
+        props.preview_polygon_count = polygon_count
+        props.preview_percentage = percentage
+
+        # Report results
+        self.report({'INFO'}, f"Preview: {selected_count} objects selected ({percentage:.1f}% of scene, {polygon_count:,} polygons)")
+
+        return {'FINISHED'}
+
+
+class OBJECT_OT_clear_preview(bpy.types.Operator):
+    """Clear preview selection"""
+    bl_idname = "object.collect_smole_clear_preview"
+    bl_label = "Clear Preview"
+    bl_description = "Deselect all objects and clear preview state"
+
+    def execute(self, context):
+        props = context.scene.collect_smole_props
+
+        # Clear selection
+        bpy.ops.object.select_all(action='DESELECT')
+
+        # Clear preview state
+        props.preview_active = False
+        props.preview_object_count = 0
+        props.preview_polygon_count = 0
+        props.preview_percentage = 0.0
+
+        self.report({'INFO'}, "Preview cleared")
 
         return {'FINISHED'}
 
@@ -179,6 +316,12 @@ class OBJECT_OT_collect_with_method(bpy.types.Operator):
         if not results['success']:
             self.report({'ERROR'}, results['error_message'])
             return {'CANCELLED'}
+
+        # Clear preview state (since we just executed the operation)
+        props.preview_active = False
+        props.preview_object_count = 0
+        props.preview_polygon_count = 0
+        props.preview_percentage = 0.0
 
         # Update view
         context.view_layer.update()
@@ -347,6 +490,22 @@ class VIEW3D_PT_collect_smole_objects(bpy.types.Panel):
         elif props.threshold_method == 'ABSOLUTE':
             box.prop(props, "absolute_volume")
 
+        # Preview Section
+        box = layout.box()
+        box.label(text="Preview", icon='HIDE_OFF')
+
+        row = box.row(align=True)
+        row.operator("object.collect_smole_preview", icon='VIEWZOOM')
+        row.operator("object.collect_smole_clear_preview", text="Clear", icon='X')
+
+        # Show preview statistics if active
+        if props.preview_active:
+            col = box.column(align=True)
+            col.separator()
+            col.label(text=f"Objects: {props.preview_object_count}", icon='OBJECT_DATA')
+            col.label(text=f"Polygons: {props.preview_polygon_count:,}")
+            col.label(text=f"Percentage: {props.preview_percentage:.1f}%")
+
         # Execute Section
         box = layout.box()
         box.label(text="Execute", icon='PLAY')
@@ -366,6 +525,8 @@ def menu_func(self, context):
 classes = (
     CollectSmoleObjectsProperties,
     OBJECT_OT_analyze_scene,
+    OBJECT_OT_preview_collection,
+    OBJECT_OT_clear_preview,
     OBJECT_OT_collect_with_method,
     OBJECT_OT_collect_smaller_objects,
     VIEW3D_PT_collect_smole_objects,
