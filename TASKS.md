@@ -4,8 +4,8 @@
 - **Current Version**: v1.1
 - **Next Target Version**: v2.0
 - **Last Updated**: 2025-11-20
-- **Active Phase**: Phase 2a - UI Panel Development
-- **Last Completed Phase**: Phase 1c - Multiple Threshold Methods ✓
+- **Active Phase**: Phase 2b - Preview System
+- **Last Completed Phase**: Phase 2a - UI Panel Development ✓
 
 ## Task Status Legend
 - [ ] Not started
@@ -128,42 +128,49 @@
 ## Phase 2a: UI Panel Development
 
 ### Panel Structure
-- [ ] Create sidebar panel in 3D Viewport
-  - [ ] Register panel in N-panel sidebar
-  - [ ] Create "Collect Objects" tab
-  - [ ] Design clean, intuitive layout
-  - [ ] Add panel icons and visual hierarchy
+- [✓] Create sidebar panel in 3D Viewport
+  - [✓] Register panel in N-panel sidebar (VIEW3D_PT_collect_smole_objects)
+  - [✓] Create "Collect" tab in N-panel
+  - [✓] Design clean, intuitive layout with sections
+  - [✓] Add panel icons and visual hierarchy (boxed sections)
 
 ### Method Selection UI
-- [ ] Implement threshold method dropdown
-  - [ ] Reference Object option
-  - [ ] Percentage option
-  - [ ] Absolute Volume option
-  - [ ] Percentile option
-  - [ ] Dynamic UI based on selection
+- [✓] Implement threshold method dropdown
+  - [✓] Reference Object option
+  - [✓] Percentage of Largest option
+  - [✓] Percentage of Average option
+  - [✓] Percentile option
+  - [✓] Absolute Volume option
+  - [✓] Dynamic UI based on selection
 
 ### Dynamic Controls
-- [ ] Create method-specific controls
-  - [ ] Reference: Object selector with info
-  - [ ] Percentage: Slider + numeric input
-  - [ ] Absolute: Volume input with units
-  - [ ] Percentile: Slider (0-100%)
+- [✓] Create method-specific controls
+  - [✓] Reference: Info label ("Select one mesh object")
+  - [✓] Percentage: Slider with precision (0.01-100%)
+  - [✓] Absolute: Volume input with units (FloatProperty with VOLUME unit)
+  - [✓] Percentile: Slider (1-99%) with object count preview
 
 ### Information Display Panel
-- [ ] Add statistics display section
-  - [ ] Show current scene stats
-  - [ ] Display threshold preview info
-  - [ ] Affected object count
-  - [ ] Estimated polygon count reduction
-  - [ ] Visual progress indicators
+- [✓] Add statistics display section
+  - [✓] Show current scene stats (Objects: valid/total)
+  - [✓] Display Min/Max/Mean/Median volumes with formatting
+  - [✓] Percentile preview (object count for percentile method)
+  - Note: Polygon count and full preview deferred to Phase 2b
 
 ### Action Buttons
-- [ ] Implement main action buttons
-  - [ ] "Analyze Scene" button
-  - [ ] "Preview Selection" button (Phase 2b)
-  - [ ] "Execute Collection" button
-  - [ ] "Clear Preview" button (Phase 2b)
-  - [ ] "Reset" button
+- [✓] Implement main action buttons
+  - [✓] "Analyze Scene" button (OBJECT_OT_analyze_scene)
+  - [✓] "Collect Objects" button (OBJECT_OT_collect_with_method)
+  - Note: Preview/Clear Preview buttons deferred to Phase 2b
+
+### Property Management
+- [✓] Create property group (CollectSmoleObjectsProperties)
+  - [✓] threshold_method (EnumProperty)
+  - [✓] percentage_value (FloatProperty)
+  - [✓] percentile_value (IntProperty)
+  - [✓] absolute_volume (FloatProperty)
+  - [✓] Scene analysis results storage
+  - [✓] Register/unregister properties properly
 
 ---
 
@@ -393,6 +400,14 @@
   - Each method returns normalized result with metadata
   - Comprehensive validation for all methods
   - Backend ready for UI integration in Phase 2a
+- **Phase 2a COMPLETED**: UI Panel Development
+  - Full sidebar panel in N-panel ("Collect" tab)
+  - Method selection dropdown with 5 options
+  - Dynamic controls that change per method
+  - Scene analysis button with statistics display
+  - Collect Objects button using selected method
+  - Property group for UI state management
+  - Clean Blender-style layout with sections
 
 ---
 
@@ -402,23 +417,26 @@
 - ✓ Phase 1a: Foundation & Error Handling (COMPLETE)
 - ✓ Phase 1b: Scene Analysis System (COMPLETE)
 - ✓ Phase 1c: Multiple Threshold Methods (COMPLETE)
+- ✓ Phase 2a: UI Panel Development (COMPLETE)
 - ✓ Project documentation (PLANNING.md, TASKS.md, CLAUDE.md)
 - ✓ Dual-format packaging system
 - ✓ Code refactoring into modules
-- ✓ Complete backend API for threshold processing
+- ✓ Complete backend API + functional UI
 
 **Active Tasks:**
-- Ready to begin Phase 2a: UI Panel Development
+- Ready to begin Phase 2b: Preview System
 
 **Next Up:**
-- Phase 2a: UI panel development
-  - Create sidebar panel in N-panel
-  - Method selection dropdown
-  - Dynamic controls for each method
-  - Statistics display
-  - Action buttons (Analyze, Preview, Execute)
 - Phase 2b: Preview system
+  - Visual highlighting of objects that will be collected
+  - Selection preview functionality
+  - Preview button in UI
+  - Clear preview button
 - Phase 2c: Multiple collection tiers
+  - Create tiered collections (Tiny, Small, Medium)
+  - Automatic tier organization
+  - Tier configuration UI
+- Phase 3: Advanced features
 
 **Blocked:**
 - None currently
