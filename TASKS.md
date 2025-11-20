@@ -4,8 +4,8 @@
 - **Current Version**: v1.1
 - **Next Target Version**: v2.0
 - **Last Updated**: 2025-11-20
-- **Active Phase**: Phase 1b - Scene Analysis System
-- **Last Completed Phase**: Phase 1a - Foundation & Error Handling ✓
+- **Active Phase**: Phase 1c - Multiple Threshold Methods
+- **Last Completed Phase**: Phase 1b - Scene Analysis System ✓
 
 ## Task Status Legend
 - [ ] Not started
@@ -53,33 +53,33 @@
 ## Phase 1b: Scene Analysis System
 
 ### Volume Analysis Core
-- [ ] Implement scene scanning functionality
-  - [ ] Scan all mesh objects in scene
-  - [ ] Calculate volumes for all objects
-  - [ ] Store results in efficient data structure
-  - [ ] Add caching for performance
+- [✓] Implement scene scanning functionality
+  - [✓] Scan all mesh objects in scene
+  - [✓] Calculate volumes for all objects
+  - [✓] Store results in efficient data structure (dict with sorted volumes list)
+  - [✓] Track invalid objects with error reasons
 
 ### Statistical Analysis
-- [ ] Calculate scene statistics
-  - [ ] Minimum volume
-  - [ ] Maximum volume
-  - [ ] Median volume
-  - [ ] Mean (average) volume
-  - [ ] Standard deviation
-  - [ ] Percentile distributions (10th, 25th, 50th, 75th, 90th)
+- [✓] Calculate scene statistics
+  - [✓] Minimum volume
+  - [✓] Maximum volume
+  - [✓] Median volume
+  - [✓] Mean (average) volume
+  - [✓] Standard deviation
+  - [✓] Percentile distributions (10th, 20th, 25th, 50th, 75th, 80th, 90th)
 
 ### Smart Suggestions
-- [ ] Implement threshold suggestion system
-  - [ ] Detect natural gaps in size distribution
-  - [ ] Identify outliers (extremely small objects)
-  - [ ] Suggest percentile-based thresholds
-  - [ ] Calculate suggested percentage thresholds
+- [✓] Implement threshold suggestion system
+  - [✓] Detect natural gaps in size distribution (3x+ ratio jumps)
+  - [✓] Identify outliers via percentiles
+  - [✓] Suggest percentile-based thresholds (20%, 80%, etc.)
+  - [✓] Calculate suggested percentage thresholds (% of largest, % of average)
 
 ### Analysis Display
-- [ ] Create analysis results data structure
-  - [ ] Format statistics for display
-  - [ ] Generate human-readable summaries
-  - [ ] Calculate estimated impact (object count, polygon count)
+- [✓] Create analysis results data structure
+  - [✓] Format statistics in structured dict
+  - [✓] Generate recommendations with reasoning
+  - [✓] Calculate estimated impact (object count, polygon count, percentage)
 
 ---
 
@@ -377,6 +377,13 @@
   - Skip invalid objects instead of failing
   - Console logging for skipped objects
   - Proper cleanup in error paths
+- **Phase 1b COMPLETED**: Scene analysis system
+  - Full statistical analysis (min/max/mean/median/std dev)
+  - Percentile calculations with linear interpolation
+  - Natural gap detection (3x+ jumps in size)
+  - Smart threshold suggestions (4 recommendation types)
+  - Impact preview calculation (counts, polygons, percentages)
+  - Structured results for future UI display
 
 ---
 
@@ -384,20 +391,23 @@
 
 **Completed:**
 - ✓ Phase 1a: Foundation & Error Handling (COMPLETE)
+- ✓ Phase 1b: Scene Analysis System (COMPLETE)
 - ✓ Project documentation (PLANNING.md, TASKS.md, CLAUDE.md)
 - ✓ Dual-format packaging system
 - ✓ Code refactoring into modules
 
 **Active Tasks:**
-- Ready to begin Phase 1b: Scene Analysis System
+- Ready to begin Phase 1c: Multiple Threshold Methods
 
 **Next Up:**
-- Phase 1b: Implement scene analysis functionality
-  - Volume statistics calculation
-  - Percentile distribution analysis
-  - Threshold suggestion logic
 - Phase 1c: Multiple threshold methods
+  - Reference object method (enhanced with preview)
+  - Percentage-based method
+  - Absolute volume method
+  - Percentile-based method
+  - Unified threshold processor
 - Phase 2a: UI panel development
+- Phase 2b: Preview system
 
 **Blocked:**
 - None currently
