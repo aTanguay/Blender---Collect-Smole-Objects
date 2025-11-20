@@ -252,7 +252,46 @@ For very large scenes (1000+ objects):
 - Reduce setup time from minutes to seconds
 
 ## Future Considerations
+
+### Occlusion Detection (Shell Extraction)
+**Problem**: CAD assemblies often include internal mechanics that are never visible in renders (screws, springs, internal components inside a closed shell).
+
+**Use Case**: Sony Walkman with full mechanicals - you only want the outer shell and parts that peek through openings.
+
+**Potential Approaches**:
+1. **Raycast-based occlusion**
+   - Cast rays from multiple directions toward each object
+   - If 100% of rays hit other objects first, mark as occluded
+   - Adjustable sensitivity (95% occluded vs 100%)
+
+2. **Camera-based visibility**
+   - Place cameras in sphere around assembly
+   - Render depth passes or use ray visibility API
+   - Objects never visible from any angle = internal
+
+3. **Bounding box intersection analysis**
+   - Fast pre-filter: if object is completely inside another object's bbox
+   - Refine with actual mesh intersection tests
+
+4. **Combined approach**
+   - Use volume + occlusion together
+   - "Collect small OR occluded objects"
+   - Most flexible for CAD cleanup
+
+**Technical Challenges**:
+- Performance with 1000+ objects (raycast complexity)
+- Handling partially visible objects (door mechanisms, vents)
+- Dealing with transparent/glass materials
+- User control over sensitivity
+
+**UI Integration**:
+- Add "Occlusion" threshold method
+- "Collect Occluded Objects" button
+- Preview shows what will be hidden
+- Sensitivity slider (0-100% occlusion threshold)
+
+### Other Future Ideas
 - Integration with other cleanup tools
 - Export filtered collections separately
 - ML-based object importance detection
-- Camera frustum-based visibility culling
+- Camera frustum-based visibility culling (view-dependent)
